@@ -5,7 +5,7 @@ description = "Toolbox for Python prototyping in my research"
 authors = ["Baptiste Esteban <baptiste.esteban@epita.fr>"]
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.10"
 numba = "^0.60.0"
 
 [tool.poetry.group.test.dependencies]
