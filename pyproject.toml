@@ -1,15 +1,23 @@
 [tool.poetry]
-name = "butils"
+name = "btoolbox"
 version = "0.1.0"
-description = "Some utilities for Python prototyping in my research"
+description = "Toolbox for Python prototyping in my research"
 authors = ["Baptiste Esteban <baptiste.esteban@epita.fr>"]
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.10"
 numba = "^0.60.0"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.0.0"
+
+[tool.poetry.group.development]
+optional = true
+
+[tool.poetry.group.development.dependencies]
+mypy = "*"
+ruff = "*"
+pre-commit = "^2.9.2"
 
 [build-system]
 requires = ["poetry-core"]
@@ -24,4 +32,14 @@ indent-style = "space"
 docstring-code-format = true
 
 [tool.ruff.lint]
-select = ["I", "SIM", "F", "E"]
+select = ["I", "SIM", "F", "E", "D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy" # https://numpydoc.readthedocs.io/en/latest/format.html
+
+[tool.ruff.per-file-ignores]
+# Ignore all directories named `tests`.
+"tests/**" = ["D"]
+
+[tool.mypy]
+ignore_missing_imports = true
