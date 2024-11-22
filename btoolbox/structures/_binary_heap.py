@@ -93,7 +93,12 @@ class BinaryHeap:
         n : int
             The node to remove in the tree.
         """
-        raise NotImplementedError()
+        self._values[self._tree[n]] = None
+        self._priorities[self._tree[n]] = None
+        self._tree[n] = self._tree[-1]
+        self._size -= 1
+        self._tree.pop()
+        self._update_down(n)
 
     def dot_graph(self) -> str:
         """Generate dot code for visualization.
