@@ -1,0 +1,14 @@
+{
+    "image": "mcr.microsoft.com/devcontainers/python:3.12",
+    "postCreateCommand": "curl -sSL https://install.python-poetry.org | python3 -",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "charliermarsh.ruff",
+                "tamasfe.even-better-toml"
+            ]
+        }
+    },
+    "remoteUser": "vscode"
+}

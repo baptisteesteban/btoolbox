@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "butils"
+version = "0.1.0"
+description = "Some utilities for Python prototyping in my research"
+authors = ["Baptiste Esteban <baptiste.esteban@epita.fr>"]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+numba = "^0.60.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+
+[tool.ruff.lint]
+select = ["I", "SIM", "F", "E"]
