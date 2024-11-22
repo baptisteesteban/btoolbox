@@ -74,22 +74,42 @@ class BinaryHeap:
 
         Parameters
         ----------
-        i: int
-            The position to update.
+        n: int
+            The node to update.
         new_p: float
             The updated priority.
         """
-        pass
+        self._priorities[self._tree[n]] = new_p
+        if n > 0 and self._priorities[self._tree[n]] < self._priorities[self._tree[(n - 1) // 2]]:
+            self._update_up(n)
+        else:
+            self._update_down(n)
 
     def remove(self, n: int):
-        """Remove a node at position `n` in the tree.
+        """Remove a node `n` in the tree.
 
         Parameters
         ----------
         n : int
             The node to remove in the tree.
         """
-        pass
+        raise NotImplementedError()
+
+    def dot_graph(self) -> str:
+        """Generate dot code for visualization.
+
+        Returns
+        -------
+        str
+            The dot code to give as input to a renderer.
+        """
+        res = "digraph G {\n"
+        for i in range(len(self._tree)):
+            res += f'  {i} [label="(v: {self._values[self._tree[i]]} p: {self._priorities[self._tree[i]]})"]\n'
+        for i in range(1, len(self._tree)):
+            res += f"  {(i - 1) // 2} -> {i}\n"
+
+        return res + "}"
 
     @property
     def size(self) -> int:

@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "butils"
+name = "btoolbox"
 version = "0.1.0"
-description = "Some utilities for Python prototyping in my research"
+description = "Toolbox for Python prototyping in my research"
 authors = ["Baptiste Esteban <baptiste.esteban@epita.fr>"]
 
 [tool.poetry.dependencies]
