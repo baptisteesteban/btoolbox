@@ -46,6 +46,10 @@ class HQueue:
         """
         return self._size == 0
 
+    def top(self) -> tuple[int, Any]:
+        assert not self.empty()
+        return self._cur, self._data[self._cur][0]
+
     def push(self, p: int, v: Any):
         """Push an element in the hierarchical queue.
 

@@ -17,6 +17,8 @@ def test_hierarchical_queue():
     assert q._cur == 2 and q._size == 5
     v2, p2 = q.pop_nearest(4)
     assert v2 == 7 and p2[0] == 0 and p2[1] == 0
+    v3, p3 = q.top()
+    assert v3 == 2 and p3[0] == 0 and p3[1] == 1
 
     ref = [(2, (0, 1)), (3, (2, 1)), (8, (2, 0)), (9, (1, 1))]
     i = 0
