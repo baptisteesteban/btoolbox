@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "btoolbox"
-version = "0.1.0"
+version = "0.1.1"
 description = "Toolbox for Python prototyping in my research"
 authors = ["Baptiste Esteban <baptiste.esteban@epita.fr>"]
 

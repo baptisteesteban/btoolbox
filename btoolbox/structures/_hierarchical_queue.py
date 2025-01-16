@@ -4,7 +4,7 @@ from typing import Any
 class HQueue:
     """Class modeling a priority queue as a hierarchical queue."""
 
-    def __init__(self, n: int, nearest_strategy: str = "lower_first"):
+    def __init__(self, n: int, nearest_strategy: str = "lower_first", cmp: str = "less"):
         """Initialize the hierarchical queue.
 
         Parameters
@@ -18,6 +18,10 @@ class HQueue:
             * `lower_first`: First look for a non-empty queue with an index value `k ≥ v`, and if not found,
             look for the non-empty queue with an index value `k < v`.
             * `distance`: look for the non-empty queue with the distance at both side of the specified queue.
+        cmp: str
+            Comparison strategy for the hierarchical queue. It may take one of the following values:
+            * `less`: The queue with the lowest index has the highest priority.
+            * `greater`: The queue with the highest index has the highest priority
 
         Raises
         ------
@@ -35,6 +39,14 @@ class HQueue:
             self._find_nearest_func = self._find_nearest
         else:
             raise ValueError("Invalid find nearest strategy")
+        self._inc = 1
+        self._lim = lambda a, b: min(a, b)
+        if cmp == "greater":
+            self._inc = -1
+            self._lim = lambda a, b: max(a, b)
+            self._cur = -1
+        elif cmp != "less":
+            raise ValueError("Invalid comparison strategy. Must be 'less' or 'greater'")
 
     def empty(self) -> bool:
         """Check if the hierarchical queue has no elements pushed.
@@ -47,6 +59,15 @@ class HQueue:
         return self._size == 0
 
     def top(self) -> tuple[int, Any]:
+        """Return the first element of the hierarchical queue.
+
+        Returns
+        -------
+        p: int
+            The priority of the first element in the hierarchical queue.
+        v: Any
+            The value of the first element in the hierarchical queue.
+        """
         assert not self.empty()
         return self._cur, self._data[self._cur][0]
 
@@ -62,7 +83,7 @@ class HQueue:
         """
         assert p < self._n
         self._data[p].append(v)
-        self._cur = min(self._cur, p)
+        self._cur = self._lim(self._cur, p)
         self._size += 1
 
     def pop(self) -> tuple[int, Any]:
@@ -137,5 +158,5 @@ class HQueue:
             self._cur = self._n
             return
 
-        while self._cur < self._n and len(self._data[self._cur]) == 0:
-            self._cur += 1
+        while self._cur < self._n and self._cur >= 0 and len(self._data[self._cur]) == 0:
+            self._cur += self._inc
