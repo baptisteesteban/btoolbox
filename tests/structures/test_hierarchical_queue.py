@@ -1,7 +1,7 @@
 from btoolbox.structures import HQueue
 
 
-def test_hierarchical_queue():
+def test_hierarchical_queue_default():
     q = HQueue(256)
     q.push(7, (0, 0))
     assert q._cur == 7
@@ -28,3 +28,23 @@ def test_hierarchical_queue():
         assert v == ref_v and p[0] == ref_p[0] and p[1] == ref_p[1]
         i += 1
     assert i == len(ref)
+
+
+def test_hierarchical_queue_greater_comp():
+    q = HQueue(10, cmp="greater")
+    q.push(7, 0)
+    q.push(3, 1)
+    q.push(5, 2)
+    q.push(6, 3)
+    p, v = q.top()
+    assert p == 7 and v == 0
+    q.pop()
+
+    REF_P = [6, 5, 3]
+    REF_V = [3, 2, 1]
+    i = 0
+    while not q.empty():
+        p, v = q.pop()
+        assert p == REF_P[i] and v == REF_V[i]
+        i += 1
+    assert i == len(REF_P)

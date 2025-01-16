@@ -56,3 +56,22 @@ def test_binary_heap_sorting_remove_elements():
         assert v == REF[cnt]
         cnt += 1
     assert cnt == len(REF)
+
+
+def test_binary_heap_greater_elements():
+    q = BinaryHeap(cmp="greater")
+    q.push(1, 7)
+    q.push(2, 3)
+    q.push(3, 5)
+    q.push(4, 9)
+    q.push(5, 1)
+
+    REF_V = [4, 1, 3, 2, 5]
+    i = 0
+    while not q.empty():
+        v, p = q.top()
+        print(p)
+        q.pop()
+        assert v == REF_V[i]
+        i += 1
+    assert i == len(REF_V)

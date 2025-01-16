@@ -1,15 +1,26 @@
-from typing import Any
+from typing import Any, Optional
 
 
 class BinaryHeap:
     """Class modeling a priority queue as a binary heap."""
 
-    def __init__(self):
-        """Initialize the binary heap."""
-        self._tree = []
-        self._priorities = []
-        self._values = []
+    def __init__(self, cmp: str = "less"):
+        """Initialize the binary heap.
+
+        Parameters
+        ----------
+        cmp: str
+            The order of the value in the binary heap. It must take 'less' (default) or 'greater' as value.
+        """
+        self._tree: list[int] = []
+        self._priorities: list[Optional[float]] = []
+        self._values: list[Optional[Any]] = []
         self._size = 0
+        self._cmp = lambda a, b: a < b
+        if cmp == "greater":
+            self._cmp = lambda a, b: a > b
+        elif cmp != "less":
+            raise ValueError("Invalid comparison strategy. Must be 'less' or 'greater'")
 
     def push(self, v: Any, p: float):
         """Add a new element in the binary heap.
@@ -35,6 +46,7 @@ class BinaryHeap:
         self._update_up(self._size)
         self._size += 1
 
+    # FIXME: this method should returns the value and the priority at the top of the binary heap
     def pop(self):
         """Remove the value at the top of the binary heap."""
         assert not self.empty()
@@ -45,7 +57,9 @@ class BinaryHeap:
         self._update_down(0)
         self._size -= 1
 
-    def top(self) -> tuple[Any, float]:
+    def top(
+        self,
+    ) -> tuple[Optional[Any], Optional[float]]:  # Here, the return value will never be None (Optional for MyPy)
         """Return the value at the top of the binary heap as well as its priority.
 
         Returns
@@ -55,7 +69,9 @@ class BinaryHeap:
         priority: int
             The priority of the value at the top of the binary heap
         """
-        assert not self.empty()
+        assert (
+            not self.empty() and self._values[self._tree[0]] is not None and self._priorities[self._tree[0]] is not None
+        )
         i = self._tree[0]
         return self._values[i], self._priorities[i]
 
@@ -80,7 +96,7 @@ class BinaryHeap:
             The updated priority.
         """
         self._priorities[self._tree[n]] = new_p
-        if n > 0 and self._priorities[self._tree[n]] < self._priorities[self._tree[(n - 1) // 2]]:
+        if n > 0 and self._cmp(self._priorities[self._tree[n]], self._priorities[self._tree[(n - 1) // 2]]):
             self._update_up(n)
         else:
             self._update_down(n)
@@ -134,13 +150,13 @@ class BinaryHeap:
             has_swapped = False
             candidate_swap = None
             c1 = 2 * n + 1
-            if c1 < N and self._priorities[self._tree[c1]] < self._priorities[self._tree[n]]:
+            if c1 < N and self._cmp(self._priorities[self._tree[c1]], self._priorities[self._tree[n]]):
                 candidate_swap = c1
             c2 = 2 * n + 2
             if (
                 c2 < N
-                and self._priorities[self._tree[c2]] < self._priorities[self._tree[n]]
-                and self._priorities[self._tree[c2]] < self._priorities[self._tree[c1]]
+                and self._cmp(self._priorities[self._tree[c2]], self._priorities[self._tree[n]])
+                and self._cmp(self._priorities[self._tree[c2]], self._priorities[self._tree[c1]])
             ):
                 candidate_swap = c2
             if candidate_swap is not None:
@@ -150,7 +166,7 @@ class BinaryHeap:
 
     def _update_up(self, n: int):
         p = (n - 1) // 2
-        while n > 0 and self._priorities[self._tree[n]] < self._priorities[self._tree[p]]:
+        while n > 0 and self._cmp(self._priorities[self._tree[n]], self._priorities[self._tree[p]]):
             self._tree[n], self._tree[p] = self._tree[p], self._tree[n]
             n = p
             p = (n - 1) // 2
